@@ -1,7 +1,7 @@
 use rand::Rng;
 use std::io::Cursor;
 use byteorder::{LittleEndian, BigEndian,ReadBytesExt, WriteBytesExt};
-use std::{fmt, result, str};
+use std::{str};
 /*
  *
  * By default, arrays are immutable.
@@ -107,5 +107,10 @@ fn main() {
   let arr2 = [0,1,0x68,0x65,0x6C,0x6C,0x6F,0x20,0x77,0x6F,0x72,0x6C,0x64,0,1,2,3,4,5];
   let (str, end_pos) = read_string(&arr2, 2);
   println!("{}, end_pos:{}",str, end_pos);
+
+  // clone data
+  let mut arr3 = [0; 512];
+  arr3[0..arr2.len()].clone_from_slice(&arr2[0..arr2.len()]);
+  println!("{:x?}",arr3);
 
 }
