@@ -86,20 +86,18 @@ fn main() {
   }
 
   /*
-   *The Debug trait is one of the most commonly used in Rust. It allows you to format the output in a programmer-facing, debugging context. The way you typically use it is like this:
-
-    let v = vec![1, 2, 3];
-    let s = format!("{:?}", v);
-    Also, as of Rust 1.58 you can Debug-format a variable by putting it right after the opening curly bracket, like this:
-
-    let s = format!("{v:?}");
-    If you want to Debug-format a custom type, such as a struct, you can simply use derive like this:
-
-    #[derive(Debug)]
-    struct Person {
-      name: String,
-      age: u8,
-    }
+   *
+   * Debug	? formatting.
+   *
+   * let v = vec![1, 2, 3];
+   * println(""{:?}", v);
+    
+   * as of Rust 1.58 you can Debug-format a variable by putting it right after the opening curly bracket, like this:
+   * println!("{v:?}");
+   * 
+   * more info
+   * https://doc.rust-lang.org/std/fmt/index.html
+   * 
    */
   println!("{:x?}",arr1);
   println!("{arr1:x?}");
@@ -141,4 +139,65 @@ fn main() {
     println!("{} ",c);
   }
 
+  let x: Vec<u32> = vec![1, 2, 3];
+  println!("{x:?}");
+
+}
+
+/*
+ *
+ * let x: Vec<u32> = {
+    let mut temp_vec = Vec::new();
+    temp_vec.push(1);
+    temp_vec.push(2);
+    temp_vec.push(3);
+    temp_vec
+  };
+ * 
+ * Matching
+ * ( $( $x:expr ),* ) => { ... };
+ * 
+ * The matcher $x:expr will match any Rust expression, binding that syntax tree to the ‘metavariable’ $x. 
+ * The identifier expr is a ‘fragment specifier’; the full possibilities are enumerated later in this chapter. 
+ * Surrounding the matcher with $(...),* will match zero or more expressions, separated by commas.
+ * 
+ * 
+ * $(
+    temp_vec.push($x);
+   )*
+
+ * That’s most of the matcher syntax. These examples use $(...)*, which is a "zero or more" match. 
+ * Alternatively you can write $(...)+ for a "one or more" match. Both forms optionally include a separator, which can be any token except + or *.
+ * 
+ * 
+ * macro_rules! o_O {
+    (
+        $(
+            $x:expr; [ $( $y:expr ),* ]
+        );*
+    ) => {
+        &[ $($( $x + $y ),*),* ]
+    }
+}
+
+fn main() {
+    let a: &[i32]
+        = o_O!(10; [1, 2, 3];
+               20; [4, 5, 6]);
+
+    assert_eq!(a, [11, 12, 13, 24, 25, 26]);
+}
+
+ */
+macro_rules! vec {
+
+  ( $( $x:expr ),* ) => {
+      {
+          let mut temp_vec = Vec::new();
+          $(
+              temp_vec.push($x);
+          )*
+          temp_vec
+      }
+  };
 }
