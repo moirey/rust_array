@@ -85,7 +85,24 @@ fn main() {
     arr1[i] = rng.gen();    
   }
 
+  /*
+   *The Debug trait is one of the most commonly used in Rust. It allows you to format the output in a programmer-facing, debugging context. The way you typically use it is like this:
+
+    let v = vec![1, 2, 3];
+    let s = format!("{:?}", v);
+    Also, as of Rust 1.58 you can Debug-format a variable by putting it right after the opening curly bracket, like this:
+
+    let s = format!("{v:?}");
+    If you want to Debug-format a custom type, such as a struct, you can simply use derive like this:
+
+    #[derive(Debug)]
+    struct Person {
+      name: String,
+      age: u8,
+    }
+   */
   println!("{:x?}",arr1);
+  println!("{arr1:x?}");
 
   // merge u8 -> u16
   let mut m16 = Cursor::new(vec![arr1[0], arr1[1]]);
@@ -112,5 +129,16 @@ fn main() {
   let mut arr3 = [0; 512];
   arr3[0..arr2.len()].clone_from_slice(&arr2[0..arr2.len()]);
   println!("{:x?}",arr3);
+
+  // string
+  let str1 = "hello"; // &str
+  let str2 = str1.to_string(); // String
+  let str3 = String::from("hello"); // String
+  println!("{},{},{}",str1,str2,str3);
+
+    // for each string
+  for c in str1.bytes() {
+    println!("{} ",c);
+  }
 
 }
