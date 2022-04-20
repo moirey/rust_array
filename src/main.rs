@@ -142,6 +142,27 @@ fn main() {
   let x: Vec<u32> = vec![1, 2, 3];
   println!("{x:?}");
 
+  // Vec<u8> to [u8]
+  // This is because Vec<T> implements AsRef<[T]>, so &Vec<T> can be coerced into &[T]
+  let a = vec![0u8, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  let b = &a; // b: &Vec<u8>
+  let c: &[u8] = &a; // c: &[u8]
+  // let c = &a[..]; // c: &[u8]
+  ///
+  /// let a = vec![0u8, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  /// let c: &[u8] = &a; // works because impl Deref for Vec<T> with Target = [T]
+  /// let d: &[u8] = a.as_ref(); // works because impl<T> AsRef<[T]> for Vec<T>
+  /// 
+  
+  // &[u8] to str (string slice)
+  let buf = &[0x41u8, 0x41u8, 0x42u8];
+
+  let s = match str::from_utf8(buf) {
+      Ok(v) => v,
+      Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
+  };
+  println!("{:?}",s);
+  
 }
 
 /*
